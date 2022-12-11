@@ -33,7 +33,9 @@ const Register = () => {
         } catch (error) {
             console.log("register Failed")
         }
-        localStorage.setItem("users", JSON.stringify(result))
+        
+        localStorage.setItem("users", JSON.stringify(result.data.result))
+        localStorage.setItem("token",JSON.stringify(result.data.auth))
 
         nevigate('/')
 

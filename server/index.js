@@ -6,6 +6,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 require("./conn");
+const jwt = require("jsonwebtoken");
+const jwtKey = "e-comm";
 // connection
 
 // for displaying the data in response
@@ -15,7 +17,12 @@ app.post("/register", async (req, res) => {
   let result = await user.save();
   result = result.toObject();
   delete result.password;
-  res.send(result);
+  jwt.sign({ result }, jwtKey, { expiresIn: "7h" }, (err, token) => {
+    if(err){
+      res.send({result:"something went wrong"})
+    }
+    res.send({result,auth:token});
+  });
 });
 
 app.post("/login", async (req, res) => {
@@ -23,7 +30,12 @@ app.post("/login", async (req, res) => {
     let user = await User.findOne(req.body).select("-password");
 
     if (user) {
-      res.send(user);
+      jwt.sign({ user }, jwtKey, { expiresIn: "7h" }, (err, token) => {
+        if(err){
+          res.send({result:"something went wrong"})
+        }
+        res.send({user,auth:token});
+      });
     } else {
       res.send({ result: "User not found" });
     }
@@ -73,17 +85,17 @@ app.put("/product/:id", async (req, res) => {
 });
 
 // search Api get request
-app.get("/search/:key",async(req,res)=>{
-  const result =await products.find({
-    "$or":[
-      {name:{$regex:req.params.key}},
-      {price:{$regex:req.params.key}},
-      {category:{$regex:req.params.key}},
-      {company:{$regex:req.params.key}}
-    ]
-  })
- res.send(result) 
-})
+app.get("/search/:key", async (req, res) => {
+  const result = await products.find({
+    $or: [
+      { name: { $regex: req.params.key } },
+      { price: { $regex: req.params.key } },
+      { category: { $regex: req.params.key } },
+      { company: { $regex: req.params.key } },
+    ],
+  });
+  res.send(result);
+});
 
 app.listen(5000, () => {
   console.log("lishening at port 5000");

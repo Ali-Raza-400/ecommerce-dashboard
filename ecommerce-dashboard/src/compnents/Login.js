@@ -16,15 +16,16 @@ const Login = () => {
     // console.log(email,password,"email and password values respectively")
    try {
    var response= await axios.post("http://localhost:5000/login",{email,password})
-    console.log("success",response.data)
+    console.log("success",response.data.auth)
     
    } catch (error) {
     console.log(error,"errpr")
    }
-  if(response){
-    localStorage.setItem("users",JSON.stringify(response))
-    nevigate('/')
+  if(response.auth){
+    localStorage.setItem("users",JSON.stringify(response.user))
+    localStorage.setItem("token",JSON.stringify(response.auth))
   }
+  nevigate('/')
   }
   return (
     <div>

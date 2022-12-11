@@ -6,7 +6,11 @@ const ListProducts = () => {
   const [products, setProducts] = useState([]);
   const getProductApi = async () => {
     await axios
-      .get("http://localhost:5000/products")
+      .get("http://localhost:5000/products",{
+        headers:{
+          authorization:JSON.parse(localStorage.getItem('token'))
+        }
+      })
       .then((res) => {
         console.log(res.data, "success data");
         setProducts(res.data);
