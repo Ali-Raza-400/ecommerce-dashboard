@@ -7,6 +7,9 @@ import {
 import Register from "./compnents/Register";
 import PrivateComp from "./compnents/PrivateComp";
 import Login from "./compnents/Login";
+ import AddProduct from './compnents/addProduct'
+import ListProducts from "./compnents/listProducts";
+import UpdateProduct from "./compnents/updateProduct";
 
 const App = () => {
  
@@ -15,10 +18,10 @@ const App = () => {
       <BrowserRouter>
        <Navbar />
       <Routes>
-        <Route path="/" element={<PrivateComp/>} />
-        <Route path="/" element={<h1>All Products</h1>} />
-        <Route path="/add" element={<h1>add Products</h1>} />
-        <Route path="/update" element={<h1>update Products</h1>} />
+        <Route  element={<PrivateComp/>} />
+        <Route path="/" element={<ListProducts/>} />
+        <Route path="/add" element={<AddProduct/>} />
+        <Route path="/update/:id" element={<UpdateProduct/>} />
         <Route path="/logout" element={<h1>logout Products</h1>} />
         <Route path="/profile" element={<h1>profile Products</h1>} />
 
